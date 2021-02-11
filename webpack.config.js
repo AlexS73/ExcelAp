@@ -20,12 +20,13 @@ const useLoaders = () =>{
                     '@babel/preset-env',
             ],
             plugins: [
-                '@babel/plugin-transform-regenerator'
+                '@babel/plugin-transform-regenerator',
+                '@babel/plugin-proposal-class-properties'
             ]
             },
         }
     ]
-
+    //eslint connected here(devMod)
     return loaders
 }
 
@@ -40,8 +41,8 @@ module.exports = {
     resolve:{
         extensions: ['.js'],
         alias:{
-            '@@': path.resolve(__dirname,'src'),
-            '@@core': path.resolve(__dirname,'src/core'),
+            '@': path.resolve(__dirname,'src'),
+            '@core': path.resolve(__dirname,'src/core'),
         }
     },
     devtool: isDev? 'source-map': false,

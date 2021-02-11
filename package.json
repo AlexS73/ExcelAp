@@ -22,6 +22,7 @@
   "homepage": "https://github.com/AlexS73/ExcelApp#readme",
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-transform-async-to-generator": "^7.12.1",
     "@babel/plugin-transform-regenerator": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
