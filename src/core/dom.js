@@ -27,6 +27,14 @@ class Dom{
         }
         return this
     }
+
+    on(eventType, callBack){
+        this.$elDom.addEventListener(eventType,callBack)
+    }
+
+    off(eventType,callBack){
+        this.$elDom.removeEventListener(eventType,callBack)
+    }
 }
 
 export function $(selector){
@@ -42,3 +50,4 @@ $.create = (tagName, classes = '') => {
     }
     return $(elNative)
 }
+

@@ -2,38 +2,38 @@ import {$} from "@core/dom";
 
 export class Excel{
     constructor(selector, options) {
-        //this.$elNative = document.querySelector(selector)
         this.$elDomExcel = $(selector)
         this.components = options.components || []
     }
 
+    //Создание разметки
     getRoot(){
-/*        const $root = document.createElement('div')
-        $root.classList.add('excel')*/
-
+        //создание корневой разметки 'div' для всех компонентов
         const $root = $.create('div', 'excel')
 
+        //для каждого компонента формируем html
+        this.components = this.components.map(Component => {
+            const $el = $.create('div', Component.className) // Создаем
+            const component = new Component($el) //new Component ~  new ExcelComponent
 
-        this.components.forEach(Component => {
-/*            const $el = document.createElement('div')
-            $el.classList.add(Component.className)*/
+            // //DEBUG
+            // if(component.name){
+            //     window['c' + component.name] = component
+            // }
 
-            const $el = $.create('div', Component.className)
-            const component = new Component($el)
-
-            //$el.innerHTML = component.toHTML()
             $el.html(component.toHTML())
-
-            //$root.insertAdjacentHTML('beforeend', component.toHTML())
             $root.append($el)
+            return component
         })
 
         return $root
     }
 
+
     render(){
         let root = this.getRoot()
-        //this.$elNative.append(root)
         this.$elDomExcel.append(root)
+        //console.log(this.components)
+        this.components.forEach(component => component.init())
     }
 }
