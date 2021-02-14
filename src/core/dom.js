@@ -6,12 +6,14 @@ class Dom{
             : selector
     }
 
+    //получение или занесение html
     html(html) {
         if(typeof html === 'string'){
             this.$elDom.innerHTML = html
         }
         return this.$elDom.outerHTML.trim()
     }
+
 
     append(node){
         if(node instanceof Dom){
@@ -28,12 +30,22 @@ class Dom{
         return this
     }
 
+    //привязка слушателей
     on(eventType, callBack){
         this.$elDom.addEventListener(eventType,callBack)
     }
 
     off(eventType,callBack){
         this.$elDom.removeEventListener(eventType,callBack)
+    }
+
+    //метод получения родителя по селектору
+    closest(selector){
+        return $(this.$elDom.closest(selector))
+    }
+
+    getCoords(){
+        return this.$elDom.getBoundingClientRect()
     }
 }
 
