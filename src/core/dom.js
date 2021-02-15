@@ -14,7 +14,7 @@ class Dom{
         return this.$elDom.outerHTML.trim()
     }
 
-
+    //добавление в конец элемента другого элемента
     append(node){
         if(node instanceof Dom){
             node = node.$elDom
@@ -41,11 +41,33 @@ class Dom{
 
     //метод получения родителя по селектору
     closest(selector){
+        //вызываем нативный метод closest у нативного элемента
         return $(this.$elDom.closest(selector))
     }
 
     getCoords(){
+        //Нативный метод получения координат
         return this.$elDom.getBoundingClientRect()
+    }
+
+    get data(){
+        return this.$elDom.dataset
+    }
+
+    findAll(selector){
+        return this.$elDom.querySelectorAll(selector)
+    }
+
+    css(styles= {}){
+        // for(const key in styles){
+        //     if(styles.hasOwnProperty(key)){
+        //         this.$elDom.style[key] = styles[key]
+        //     }
+        // }
+
+        Object.keys(styles).forEach( key => {
+            this.$elDom.style[key] = styles[key]
+        })
     }
 }
 

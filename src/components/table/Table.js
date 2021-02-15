@@ -1,6 +1,7 @@
 import {ExcelComponent} from "@core/ExcelComponent";
 import {createTable} from "@/components/table/table.template";
-import {$} from "@core/dom";
+import {resizeHandler} from "@/components/table/table.resize";
+import {shouldResize} from "@/components/table/table.functions";
 
 export class Table extends ExcelComponent{
     static className = 'excel__table'
@@ -8,53 +9,18 @@ export class Table extends ExcelComponent{
     constructor($root) {
         super($root, {
             name: 'Table',
-            listeners: ['mousedown', 'mouseup', ]
+            listeners: ['mousedown', ]
         });
     }
 
     toHTML() {
-        return createTable(30)
+        return createTable(25)
     }
 
     onMousedown(event){
-        if(event.target.dataset.resize){
-
-            const $resizer = $(event.target)
-
-            //const $parent = $resizer.$elDom.parentNode //bad
-            //const $parent = $resizer.$elDom.closest('.column')
-            const $parent = $resizer.closest('[data-type="resizable"]')
-            const coords = $parent.getCoords()
-
-            document.onmousemove = (e) => {
-
-                if (event.target.dataset.resize === 'col'){
-                    const delta = Math.floor(e.pageX - coords.right)
-                    const value = coords.width + delta
-                    $parent.$elDom.style.width = value + 'px'
-                }
-                else if(event.target.dataset.resize === 'row'){
-                    const delta = Math.floor(e.pageY - coords.bottom)
-                    const value = coords.height + delta
-                    $parent.$elDom.style.height = value + 'px'
-                }
-
-            }
-
-            document.onmouseup= () =>{
-                document.onmousemove = null
-            }
-
+        if(shouldResize(event)){
+            resizeHandler(this.$root, event)
         }
-    }
-
-    onMouseup(event){
-
-
-    }
-
-    onMousemove(){
-
     }
 
 }
