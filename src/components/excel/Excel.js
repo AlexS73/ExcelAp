@@ -16,11 +16,6 @@ export class Excel{
             const $el = $.create('div', Component.className) // Создаем
             const component = new Component($el) //new Component ~  new ExcelComponent
 
-            // //DEBUG
-            // if(component.name){
-            //     window['c' + component.name] = component
-            // }
-
             $el.html(component.toHTML())
             $root.append($el)
             return component
@@ -33,7 +28,7 @@ export class Excel{
     render(){
         let root = this.getRoot()
         this.$elDomExcel.append(root)
-        //console.log(this.components)
+
         this.components.forEach(component => component.init())
     }
 }

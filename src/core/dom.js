@@ -58,6 +58,10 @@ class Dom{
         return this.$elDom.querySelectorAll(selector)
     }
 
+    find(selector){
+        return $(this.$elDom.querySelector(selector))
+    }
+
     css(styles= {}){
         // for(const key in styles){
         //     if(styles.hasOwnProperty(key)){
@@ -68,6 +72,14 @@ class Dom{
         Object.keys(styles).forEach( key => {
             this.$elDom.style[key] = styles[key]
         })
+    }
+
+    addClass(className){
+        this.$elDom.classList.add(className)
+    }
+
+    removeClass(className){
+        this.$elDom.classList.remove(className)
     }
 }
 
