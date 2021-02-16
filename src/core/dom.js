@@ -81,6 +81,22 @@ class Dom{
     removeClass(className){
         this.$elDom.classList.remove(className)
     }
+
+    focus(){
+        this.$elDom.focus()
+        return this
+    }
+
+    id(parse){
+        if(parse){
+            const parsed = this.id().split(':')
+            return {
+                row: parsed[0],
+                col: parsed[1]
+            }
+        }
+        return this.data.id
+    }
 }
 
 export function $(selector){

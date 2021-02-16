@@ -11,16 +11,16 @@ export class Table extends ExcelComponent{
     constructor($root) {
         super($root, {
             name: 'Table',
-            listeners: ['mousedown', ]
+            listeners: ['mousedown', 'keydown']
         });
     }
 
     prepare() {
-        this.selection = new TableSelection()
+        this.selection = new TableSelection(this.$root)
     }
 
     toHTML() {
-        return createTable(25)
+        return createTable(250)
     }
 
     init() {
@@ -32,34 +32,55 @@ export class Table extends ExcelComponent{
     onMousedown(event){
         if(shouldResize(event)){
             resizeHandler(this.$root, event)
-        }else if(isCell(event)){
-            if(event.shiftKey && this.selection.group.length > 0){
-                let firstNode = this.selection.group[0]
-                let secondNode = $(event.target)
-                let nodes = []
-
-                const range = {
-                    minRow: Number(firstNode.data.row) > Number(secondNode.data.row) ? Number(secondNode.data.row) : Number(firstNode.data.row),
-                    minCol : Number(firstNode.data.col) > Number(secondNode.data.col) ? Number(secondNode.data.col) : Number(firstNode.data.col),
-                    maxRow: Number(firstNode.data.row) < Number(secondNode.data.row) ? Number(secondNode.data.row) : Number(firstNode.data.row),
-                    maxCol: Number(firstNode.data.col) < Number(secondNode.data.col) ? Number(secondNode.data.col) : Number(firstNode.data.col),
-                }
-
-                for(let row = range.minRow; row <= range.maxRow; row++){
-                    for(let cell = range.minCol; cell <= range.maxCol; cell++){
-                        let findcell = this.$root.find(`[data-id="${row}:${cell}"]`)
-                        nodes.push(findcell)
-                    }
-                }
-
-                this.selection.selectGroup(nodes)
-            }else{
+        }
+        else if(isCell(event)){
+            if(event.shiftKey){
+                this.selection.selectGroup($(event.target))
+            }
+            else{
                 this.selection.select($(event.target))
             }
-
-
         }
 
     }
 
+    onKeydown(event){
+        const charKeys = [
+            'Enter',
+            'ArrowLeft',
+            'ArrowRight',
+            'ArrowDown',
+            'ArrowUp'
+        ]
+
+        const {key} = event
+        if(charKeys.includes(key) && !event.shiftKey){
+            event.preventDefault()
+            const id = this.selection.current.id(true)
+            const $next = this.$root.find(nextSelector(key, id))
+            this.selection.select($next)
+        }
+
+    }
+}
+
+function nextSelector(key, {col, row}){
+    const MIN_VALUE = 0
+    switch (key){
+        case 'Enter':
+        case  'ArrowDown':
+            row++
+            break
+        case 'ArrowLeft':
+            col = col - 1 < MIN_VALUE ? MIN_VALUE : col - 1
+            break
+        case 'ArrowRight':
+            col++
+            break
+        case 'ArrowUp':
+            row = row - 1 < MIN_VALUE ? MIN_VALUE : row - 1
+            break
+    }
+
+    return `[data-id="${row}:${col}"]`
 }
